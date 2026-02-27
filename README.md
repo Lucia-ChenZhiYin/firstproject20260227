@@ -1,2 +1,1 @@
-# firstproject20260227
-doing testing
+Trying to do my first gitproject
