@@ -61,6 +61,15 @@
             transform: translateY(-3px); /* 輕微往上跳動的效果 */
         }
 
+        .dark-mode {
+            background: #222 !important; /* 強制變黑 */
+        }
+        .dark-mode .card {
+            background: #333;
+            color: white;
+        }
+        .dark-mode h1 { color: #fff; }
+
     </style>
 </head>
 <body>
@@ -87,7 +96,18 @@
         <div class="footer">
             📫 聯絡我：t113ab0016@ntut.org.tw
         </div>
+
+        <button onclick="toggleDarkMode()" style="margin-top:10px; cursor:pointer;">切換模式</button>
+
     </div>
+
+<script>
+function toggleDarkMode() {
+    var element = document.body;
+    // 切換一個叫 "dark-mode" 的 CSS 設定
+    element.classList.toggle("dark-mode");
+}
+</script>
 
 </body>
 </html>
