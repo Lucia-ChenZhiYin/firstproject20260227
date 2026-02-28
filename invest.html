@@ -22,6 +22,7 @@
         <div id="result-area">
             <div class="result-label">期末預估總價值</div>
             <div id="result-value" class="result-value">NT$ 162,889</div>
+            <div id="advice" style="margin-top: 15px; font-size: 0.9rem; color: #666; font-style: italic;"></div>
         </div>
 
         <a href="index.html" class="back-home">← 回到個人主頁</a>
@@ -39,12 +40,27 @@
             }
 
             let result = p * (Math.pow((1 + r), y));
-            
-            // 更新結果文字
+            let profitRate = (result - p) / p * 100; // 計算總報酬率
+
+            // 更新結果金額
             document.getElementById('result-value').innerText = 
                 "NT$ " + Math.round(result).toLocaleString();
+
+            // --- 新增：AI 理財評價邏輯 ---
+            let adviceText = "";
+            if (profitRate <= 0) {
+                adviceText = "💡 提醒：這筆投資似乎沒辦法產生利潤，要再思考一下喔。";
+            } else if (profitRate > 0 && profitRate <= 20) {
+                adviceText = "💡 評價：穩健的選擇，適合風險承受度較低的配置。";
+            } else if (profitRate > 20 && profitRate <= 100) {
+                adviceText = "🚀 評價：很棒的投資規劃！資產有顯著的增長。";
+            } else {
+                adviceText = "🔥 評價：這是一個超強力的財富倍增計畫！請注意風險控管。";
+            }
+            
+            document.getElementById('advice').innerText = adviceText;
         }
-    </script>
+            </script>
 </body>
 <style>
     /* 全域設定：讓背景有一點灰藍色的質感 */
