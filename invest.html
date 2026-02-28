@@ -1,20 +1,157 @@
-<div class="box">
-    <h3>📈 複利計算小工具</h3>
-    <label>本金 (元)：</label>
-    <input type="number" id="principal" value="100000">
-    
-    <label>年利率 (%)：</label>
-    <input type="number" id="rate" value="5">
-    
-    <label>投資年數：</label>
-    <input type="number" id="years" value="10">
-    
-    <button onclick="calculateCompound()">開始計算</button>
-    
-    <div id="result-area" style="margin-top: 20px; font-weight: bold; color: #2e7d32;">
-        預估結果：NT$ 0
+<body>
+    <div class="box">
+        <h3>📈 複利計算小工具</h3>
+        
+        <div class="input-group">
+            <label>初始本金 (TWD)</label>
+            <input type="number" id="principal" value="100000" placeholder="例如：100000">
+        </div>
+        
+        <div class="input-group">
+            <label>年化報酬率 (%)</label>
+            <input type="number" id="rate" value="5" step="0.1">
+        </div>
+        
+        <div class="input-group">
+            <label>投資年數</label>
+            <input type="number" id="years" value="10">
+        </div>
+        
+        <button onclick="calculateCompound()">開始試算財富自由 🚀</button>
+        
+        <div id="result-area">
+            <div class="result-label">期末預估總價值</div>
+            <div id="result-value" class="result-value">NT$ 162,889</div>
+        </div>
+
+        <a href="index.html" class="back-home">← 回到個人主頁</a>
     </div>
-    <div style="margin-top: 30px;">
-        <a href="index.html" style="text-decoration: none; color: #666;">← 回到個人主頁</a>
-    </div>
-</div>
+
+    <script>
+        function calculateCompound() {
+            let p = parseFloat(document.getElementById('principal').value);
+            let r = parseFloat(document.getElementById('rate').value) / 100;
+            let y = parseFloat(document.getElementById('years').value);
+
+            if (isNaN(p) || isNaN(r) || isNaN(y)) {
+                alert("請輸入正確的數字喔！");
+                return;
+            }
+
+            let result = p * (Math.pow((1 + r), y));
+            
+            // 更新結果文字
+            document.getElementById('result-value').innerText = 
+                "NT$ " + Math.round(result).toLocaleString();
+        }
+    </script>
+</body>
+<style>
+    /* 全域設定：讓背景有一點灰藍色的質感 */
+    body {
+        font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+        background: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+
+    /* 計算機主體卡片 */
+    .box {
+        background: white;
+        padding: 30px;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: left; /* 讓文字靠左比較專業 */
+    }
+
+    h3 {
+        color: #1a531b;
+        text-align: center;
+        margin-top: 0;
+        font-size: 1.5rem;
+    }
+
+    /* 輸入區塊的排版 */
+    .input-group {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        font-size: 0.9rem;
+        color: #666;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #eee;
+        border-radius: 10px;
+        font-size: 1rem;
+        box-sizing: border-box; /* 確保 padding 不會撐破框框 */
+        transition: border-color 0.3s;
+    }
+
+    input:focus {
+        border-color: #2e7d32; /* 點擊時變成綠色 */
+        outline: none;
+    }
+
+    /* 漂亮的計算按鈕 */
+    button {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #2e7d32 0%, #1a531b 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(46, 125, 50, 0.3);
+    }
+
+    /* 結果顯示區域 */
+    #result-area {
+        margin-top: 25px;
+        padding: 20px;
+        background: #e8f5e9;
+        border-radius: 12px;
+        text-align: center;
+    }
+
+    .result-label {
+        font-size: 0.85rem;
+        color: #444;
+        margin-bottom: 5px;
+    }
+
+    .result-value {
+        font-size: 1.8rem;
+        color: #2e7d32;
+        font-weight: 800;
+    }
+
+    .back-home {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #888;
+        text-decoration: none;
+        font-size: 0.9rem;
+    }
+
+    .back-home:hover { color: #333; }
+</style>
