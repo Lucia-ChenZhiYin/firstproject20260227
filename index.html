@@ -3,132 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的第一個網站</title>
+    <title>陳知茵的個人網站</title>
     <style>
-        /* 這裡就是 CSS，負責控制外觀 */
+        /* --- 全域設定 --- */
         body {
             font-family: "Microsoft JhengHei", sans-serif;
+            /* 背景圖片設定 */
             background: url('https://images.1111.com.tw/discussPic/63/52796763_145814312.098182.jpg');
-            background-size: cover; /* 讓圖片鋪滿全螢幕 */
+            background-size: cover; 
             background-position: center;
+            background-attachment: fixed; /* 讓背景固定不隨捲軸滾動 */
+            /* 置中對齊設定 */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
+            transition: background 0.5s ease; /* 讓切換深色模式時背景變色更柔和 */
         }
+
+        /* --- 個人卡片本體 --- */
         .card {
             background: white;
-            padding: 2rem;
-            border-radius: 15px;
-            animation: fadeInUp 1s ease-out;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             text-align: center;
-            max-width: 350px;
+            max-width: 400px;
+            width: 90%; /* 行動裝置適應性 */
+            
+            /* 呼叫下方定義的動畫 */
+            animation: fadeInUp 1s ease-out forwards;
         }
+
+        /* --- 頭像樣式 --- */
         .avatar {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            background: #ddd;
-            margin-bottom: 1rem;
+            background: #eee;
+            margin: 0 auto 1.5rem;
+            border: 3px solid #f0f0f0;
+            /* 如果有照片，可以在這裡改用 background-image */
         }
-        h1 { color: #333; margin: 10px 0; }
-        p { color: #666; line-height: 1.6; }
+
+        /* --- 文字內容樣式 --- */
+        h1 { color: #2c3e50; margin: 10px 0; font-size: 1.8rem; }
+        p { color: #555; line-height: 1.8; margin-bottom: 20px; }
+
+        /* --- 標籤樣式 --- */
         .tag {
             display: inline-block;
             background: #e1f5fe;
             color: #0288d1;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
+            padding: 6px 15px;
+            border-radius: 25px;
+            font-size: 0.85rem;
             margin: 5px;
+            font-weight: bold;
         }
-        .footer { margin-top: 20px; font-size: 0.9rem; color: #888; }
 
-        .social-links { margin: 20px 0; }
+        /* --- 按鈕與連結 --- */
+        .social-links { margin: 25px 0; }
         .btn {
             display: inline-block;
-            padding: 10px 20px;
-            background-color: #333; /* 按鈕顏色 */
-            color: white;
-            text-decoration: none; /* 去掉超連結下劃線 */
-            border-radius: 5px;
-            margin: 5px;
-            transition: 0.3s; /* 讓滑鼠移上去的變化變柔和 */
+            padding: 10px 25px;
+            background-color: #333;
+            color: white !important;
+            text-decoration: none;
+            border-radius: 8px;
+            margin: 8px;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
         }
         .btn:hover {
-            background-color: #555;
-            transform: translateY(-3px); /* 輕微往上跳動的效果 */
+            background-color: #0288d1;
+            transform: translateY(-3px); /* 滑鼠懸停往上彈 */
+            box-shadow: 0 5px 15px rgba(2, 136, 209, 0.3);
         }
 
+        /* --- 頁尾與切換按鈕 --- */
+        .footer { margin-top: 20px; font-size: 0.85rem; color: #888; }
+        .mode-toggle {
+            margin-top: 20px;
+            padding: 8px 15px;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .mode-toggle:hover { background: #f0f0f0; }
+
+        /* --- 深色模式設定 --- */
         .dark-mode {
-            background: #222 !important; /* 強制變黑 */
+            background: #1a1a1a !important; /* 切換後底圖會消失變全黑 */
         }
         .dark-mode .card {
-            background: #333;
-            color: white;
+            background: #2d2d2d;
+            color: #eee;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         .dark-mode h1 { color: #fff; }
+        .dark-mode p { color: #bbb; }
+        .dark-mode .mode-toggle { background: #444; color: white; border-color: #555; }
 
-        <style>
-            /* 1. 先定義卡片的樣子 */
-            .card {
-                ... 屬性 ...
-                animation: fadeInUp 1s ease-out;
+        /* --- 動態效果定義 (這就是讓網站動起來的關鍵) --- */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px); /* 從下方 40px 的位置 */
             }
-
-            /* 2. 獨立定義動畫的動作 (這是關鍵！) */
-            @keyframes fadeInUp {
-                from {
-                    opacity: 0;
-                    transform: translateY(30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+            to {
+                opacity: 1;
+                transform: translateY(0);    /* 回到原位 */
             }
-</style>
-
+        }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <div style="display: flex; justify-content: center;">
-            <div class="avatar"></div> 
-        </div>
+        <div class="avatar">
+            </div>
         
         <h1>陳知茵</h1>
-        <p>👋 你好！我就讀台北科技大學_資訊與財經管理系，正在熟悉程式語言、AI應用、金融領域知識。</p>
+        <p>👋 你好！我就讀台北科技大學資訊與財經管理系，正在熟悉程式語言、AI 應用與金融領域知識。</p>
         
         <div>
             <span class="tag">程式技能學習</span>
-            <span class="tag">正在嘗試做github作品</span>
-            <span class="tag">希望大三升大四可以順利得到實習機會</span>
+            <span class="tag">GitHub 作品集製作中</span>
+            <span class="tag">目標大四實習機會</span>
         </div>
 
         <div class="social-links">
             <a href="https://instagram.com/你的帳號" target="_blank" class="btn">Instagram</a>
-            <a href="mailto:你的Email@gmail.com" class="btn">傳送郵件</a>
+            <a href="mailto:t113ab0016@ntut.org.tw" class="btn">傳送郵件</a>
         </div>
 
         <div class="footer">
             📫 聯絡我：t113ab0016@ntut.org.tw
         </div>
 
-        <button onclick="toggleDarkMode()" style="margin-top:10px; cursor:pointer;">切換模式</button>
-
+        <button class="mode-toggle" onclick="toggleDarkMode()">切換深/淺色模式</button>
     </div>
 
-<script>
-function toggleDarkMode() {
-    var element = document.body;
-    // 切換一個叫 "dark-mode" 的 CSS 設定
-    element.classList.toggle("dark-mode");
-}
-</script>
+    <script>
+        function toggleDarkMode() {
+            var element = document.body;
+            // 在 body 標籤上切換 .dark-mode 類別
+            element.classList.toggle("dark-mode");
+        }
+    </script>
 
 </body>
 </html>
