@@ -18,6 +18,7 @@
         </div>
         
         <button onclick="calculateCompound()">開始試算財富自由 🚀</button>
+        <button onclick="resetForm()" style="margin-top: 10px; background: #999; font-size: 0.9rem;">清除重填 🧹</button>
         
         <div id="result-area">
             <div class="result-label">期末預估總價值</div>
@@ -60,7 +61,20 @@
             
             document.getElementById('advice').innerText = adviceText;
         }
-            </script>
+        function resetForm() {
+            // 1. 把所有輸入框的值變回空字串 ""
+            document.getElementById('principal').value = "";
+            document.getElementById('rate').value = "";
+            document.getElementById('years').value = "";
+            
+            // 2. 把結果區域也變回初始狀態
+            document.getElementById('result-value').innerText = "NT$ 0";
+            document.getElementById('advice').innerText = "";
+            
+            // 3. (小技巧) 讓游標自動跳回第一個格子，方便使用者重新輸入
+            document.getElementById('principal').focus();
+        }
+    </script>
 </body>
 <style>
     /* 全域設定：讓背景有一點灰藍色的質感 */
