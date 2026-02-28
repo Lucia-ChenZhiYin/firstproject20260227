@@ -44,6 +44,23 @@
             margin: 5px;
         }
         .footer { margin-top: 20px; font-size: 0.9rem; color: #888; }
+
+        .social-links { margin: 20px 0; }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #333; /* 按鈕顏色 */
+            color: white;
+            text-decoration: none; /* 去掉超連結下劃線 */
+            border-radius: 5px;
+            margin: 5px;
+            transition: 0.3s; /* 讓滑鼠移上去的變化變柔和 */
+        }
+        .btn:hover {
+            background-color: #555;
+            transform: translateY(-3px); /* 輕微往上跳動的效果 */
+        }
+
     </style>
 </head>
 <body>
@@ -57,9 +74,14 @@
         <p>👋 你好！我就讀台北科技大學_資訊與財經管理系，正在熟悉程式語言、AI應用、金融領域知識。</p>
         
         <div>
-            <span class="tag">VScode與Github學習使用中</span>
-            <span class="tag">目標多益860</span>
+            <span class="tag">程式技能學習</span>
+            <span class="tag">正在嘗試做github作品</span>
             <span class="tag">希望大三升大四可以順利得到實習機會</span>
+        </div>
+
+        <div class="social-links">
+            <a href="https://instagram.com/你的帳號" target="_blank" class="btn">Instagram</a>
+            <a href="mailto:你的Email@gmail.com" class="btn">傳送郵件</a>
         </div>
 
         <div class="footer">
