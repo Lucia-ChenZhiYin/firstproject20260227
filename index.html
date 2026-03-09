@@ -8,42 +8,39 @@
         /* --- 全域設定 --- */
         body {
             font-family: "Microsoft JhengHei", sans-serif;
-            /* 背景圖片設定 */
             background: url('bkg.jpg');
             background-size: cover; 
             background-position: center;
-            background-attachment: fixed; /* 讓背景固定不隨捲軸滾動 */
-            /* 置中對齊設定 */
+            background-attachment: fixed;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: 100vh; /* 改為 min-height 避免手機版內容被裁切 */
             margin: 0;
-            transition: background 0.5s ease; /* 讓切換深色模式時背景變色更柔和 */
+            transition: background 0.5s ease;
         }
-        
-        .main-container{
+
+        /* --- 卡片容器 (關鍵修改) --- */
+        .main-container {
             display: flex;
-            flex-wrap: warp;
+            flex-wrap: wrap; /* 讓手機版會自動換行 */
             justify-content: center;
-            gap: 20px;
+            gap: 20px; /* 兩張卡片間的距離 */
             width: 95%;
             max-width: 900px;
             padding: 20px 0;
         }
 
-        /* --- 個人卡片本體 --- */
+        /* --- 卡片通用樣式 --- */
         .card {
             background: white;
             padding: 2rem;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.2);
             text-align: center;
-            flex: 1;
-            min-width: 320px;
-            max-width: 400px; 
-            
-            /* 呼叫下方定義的動畫 */
+            flex: 1; /* 讓兩張卡片等寬 */
+            min-width: 320px; /* 限制最小寬度 */
+            max-width: 400px;
             animation: fadeInUp 1s ease-out forwards;
         }
 
@@ -52,26 +49,24 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            /* --- 修改這裡 --- */
-            background-image: url('Me.jpg'); /* 這裡填入你的檔名 */
-            background-size: cover;          /* 讓照片自動填滿圓圈 */
-            background-position: center;      /* 照片置中 */
-            /* ---------------- */
+            background-image: url('Me.jpg'); 
+            background-size: cover;
+            background-position: center;
             margin: 0 auto 1.5rem;
             border: 3px solid #f0f0f0;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            transition: 0.3s;/* 縮放過程變平滑 */
+            transition: 0.3s;
         }
         .avatar:hover {
-            transform: scale(1.1); /* 滑鼠移上去放大 1.1 倍 */    
+            transform: scale(1.1);
             cursor: pointer;
         }
 
         /* --- 文字內容樣式 --- */
-        h1,h3 { color: #2c3e50; margin: 10px 0; font-size: 1.8rem; }
-        p { color: #555; line-height: 1.8; margin-bottom: 20px; }
+        h1, h3 { color: #2c3e50; margin: 10px 0; }
+        p { color: #555; line-height: 1.6; margin-bottom: 15px; font-size: 0.95rem; }
 
-        /* --- 標籤樣式 --- */
+        /* --- 標籤與連結 --- */
         .tag {
             display: inline-block;
             background: #e1f5fe;
@@ -83,100 +78,85 @@
             font-weight: bold;
         }
 
-        /* --- 按鈕與連結 --- */
-        .social-links { margin: 25px 0; }
         .btn {
-            display: inline-block;
+            display: block; /* 作品按鈕改為區塊，整條比較好點擊 */
             padding: 12px;
             background-color: #333;
             color: white !important;
             text-decoration: none;
             border-radius: 8px;
-            margin: 10px;
+            margin: 10px 0;
             transition: all 0.3s ease;
             font-size: 0.9rem;
         }
         .btn:hover {
             background-color: #0288d1;
-            transform: translateY(-3px); /* 滑鼠懸停往上彈 */
+            transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(2, 136, 209, 0.3);
         }
-  
-        /* --- 頁尾與切換按鈕 --- */
-        .footer { margin-top: 20px; font-size: 0.85rem; color: #888; }
-        .mode-toggle {
-            margin-top: 20px;
-            padding: 10px 15px;
-            border: 1px solid #ddd;
-            background: white;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        .mode-toggle:hover { background: #f0f0f0; }
 
-        /* --- 深色模式設定 --- */
-        .dark-mode {
-            background: #404040 !important; /* 切換後底圖會消失變全黑 */
-        }
-        .dark-mode .card {
-            background: #333333;
-            color: #eee;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .dark-mode h1 { color: #fff; }
+        /* --- 深色模式 --- */
+        .dark-mode { background: #404040 !important; }
+        .dark-mode .card { background: #333; color: #eee; }
+        .dark-mode h1, .dark-mode h3 { color: #fff; }
         .dark-mode p { color: #bbb; }
-        .dark-mode .mode-toggle { background: #444; color: white; border-color: #555; }
+        .dark-mode .mode-toggle { background: #444; color: white; }
 
-        /* --- 動態效果定義 (這就是讓網站動起來的關鍵) --- */
+        .mode-toggle {
+            position: fixed; /* 固定在右下角，不影響卡片佈局 */
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+            z-index: 100;
+        }
+
         @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px); /* 從下方 40px 的位置 */
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);    /* 回到原位 */
-            }
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
         }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <div class="avatar">
+    <div class="main-container">
+        <div class="card">
+            <div class="avatar"></div>
+            <h1>陳知茵</h1>
+            <p>👋 你好！我就讀北科大資財系，熱衷於程式語言、AI 應用與金融領域。</p>
+            <div>
+                <span class="tag">程式學習</span>
+                <span class="tag">資財管理</span>
+                <span class="tag">實習尋找中</span>
             </div>
-        
-        <h1>陳知茵</h1>
-        <p>👋 你好！我就讀台北科技大學資訊與財經管理系，正在熟悉程式語言、AI 應用與金融領域知識。</p>
-        
-        <div>
-            <span class="tag">程式技能學習</span>
-            <span class="tag">GitHub 作品集製作中</span>
-            <span class="tag">目標大四實習機會</span>
+            <div style="margin-top: 20px;">
+                <a href="mailto:t113ab0016@ntut.org.tw" style="font-size: 0.8rem; color: #888; text-decoration: none;">📫 聯絡我</a>
+            </div>
         </div>
 
-        <div class="social-links">
-            <a href="https://instagram.com/你的帳號" target="_blank" class="btn">Instagram</a>
-            <a href="mailto:t113ab0016@ntut.org.tw" class="btn">傳送郵件</a>
+        <div class="card">
+            <h3>🚀 作品集與連結</h3>
+            <p>點擊下方按鈕查看我的專案與社交媒體</p>
+            
+            <div class="portfolio-links">
+                <a href="invest.html" class="btn" style="background-color: #2e7d32;">📈 複利計算機專案</a>
+                <a href="https://github.com/你的帳號" target="_blank" class="btn" style="background-color: #444;">💻 GitHub 作品倉庫</a>
+                
+                <div style="display: flex; gap: 10px;">
+                    <a href="https://instagram.com/你的帳號" target="_blank" class="btn" style="flex: 1; background-color: #E1306C;">Instagram</a>
+                    <a href="mailto:t113ab0016@ntut.org.tw" class="btn" style="flex: 1; background-color: #0288d1;">Email</a>
+                </div>
+            </div>
         </div>
-
-        <div class="footer">
-            📫 聯絡我：t113ab0016@ntut.org.tw
-        </div>
-
-        <div style="margin-top: 30px;">
-            <a href="invest.html" class="btn" style="background-color: #2e7d32;">開啟複利計算機 📈</a>
-        </div>
-
-        <button class="mode-toggle" onclick="toggleDarkMode()">切換深/淺色模式</button>
     </div>
+
+    <button class="mode-toggle" onclick="toggleDarkMode()">切換深/淺色模式</button>
 
     <script>
         function toggleDarkMode() {
-            var element = document.body;
-            // 在 body 標籤上切換 .dark-mode 類別
-            element.classList.toggle("dark-mode");
+            document.body.classList.toggle("dark-mode");
         }
     </script>
 
