@@ -1,61 +1,75 @@
-<body>   
-    <div class="ba-calc">
-        <style>
-            .ba-calc input { width: 80%; padding: 8px; margin: 5px; border-radius: 5px; border: 1px solid #ccc; }
-            .calc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; text-align: left; }
-        </style>
-        <h3>專業金融 TVM 計算器</h3>
-        <div class="calc-grid">
-            <div><label>N (期數):</label><input type="number" id="n_val"></div>
-            <div><label>I/Y (年利率%):</label><input type="number" id="i_val"></div>
-            <div><label>PV (現值):</label><input type="number" id="pv_val"></div>
-            <div><label>PMT (每期支付):</label><input type="number" id="pmt_val"></div>
-            <div><label>FV (終值):</label><input type="number" id="fv_val"></div>
-        </div>
-        <p style="font-size: 0.8rem; color: #666;">* 輸入任意四個值，點擊計算剩餘值</p>
-        <button onclick="calculateTVM()" class="btn" style="background-color: #f39c12; width: 100%;">COMPUTE (計算)</button>
-        <h4 id="ba_result">結果將顯示於此</h4>
-    </div>
-    </script>
-            function calculateTVM() {
-                // 取得所有輸入值，若為空則設為 null
-                const n = document.getElementById('n_val').value !== "" ? parseFloat(document.getElementById('n_val').value) : null;
-                const i = document.getElementById('i_val').value !== "" ? parseFloat(document.getElementById('i_val').value) / 100 : null;
-                const pv = document.getElementById('pv_val').value !== "" ? parseFloat(document.getElementById('pv_val').value) : null;
-                const pmt = document.getElementById('pmt_val').value !== "" ? parseFloat(document.getElementById('pmt_val').value) : null;
-                const fv = document.getElementById('fv_val').value !== "" ? parseFloat(document.getElementById('fv_val').value) : null;
-
-                let result = "";
-
-                // 判斷哪個是空的並計算 (這裡先實作最常用的 FV, PV, PMT, N)
-                if (fv === null && n !== null && i !== null && pv !== null && pmt !== null) {
-                    // 解 FV
-                    const fv_res = -(pv * Math.pow(1 + i, n) + pmt * ((Math.pow(1 + i, n) - 1) / i));
-                    result = "計算結果 (FV): " + fv_res.toFixed(2);
-                    document.getElementById('fv_val').value = fv_res.toFixed(2);
-                } 
-                else if (pv === null && n !== null && i !== null && fv !== null && pmt !== null) {
-                    // 解 PV
-                    const pv_res = -(fv / Math.pow(1 + i, n) + pmt * ((Math.pow(1 + i, n) - 1) / (i * Math.pow(1 + i, n))));
-                    result = "計算結果 (PV): " + pv_res.toFixed(2);
-                    document.getElementById('pv_val').value = pv_res.toFixed(2);
-                }
-                else if (pmt === null && n !== null && i !== null && pv !== null && fv !== null) {
-                    // 解 PMT
-                    const pmt_res = -(i * (fv + pv * Math.pow(1 + i, n))) / (Math.pow(1 + i, n) - 1);
-                    result = "計算結果 (PMT): " + pmt_res.toFixed(2);
-                    document.getElementById('pmt_val').value = pmt_res.toFixed(2);
-                }
-                else if (n === null && i !== null && pv !== null && pmt !== null && fv !== null) {
-                    // 解 N (使用對數 log)
-                    const n_res = Math.log((pmt - fv * i) / (pmt + pv * i)) / Math.log(1 + i);
-                    result = "計算結果 (N): " + n_res.toFixed(2);
-                    document.getElementById('n_val').value = n_res.toFixed(2);
-                } else {
-                    result = "請確保填入剛好四個欄位";
-                }
-
-                document.getElementById('ba_result').innerText = result;
-            }
-        </script>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>專業 TVM 金融計算機</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .calc-card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        .input-group { margin: 15px 0; text-align: left; }
+        label { display: block; font-size: 0.85rem; color: #666; margin-bottom: 5px; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .btn-calc { background: #f39c12; color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-size: 1rem; margin-top: 10px; }
+        .btn-calc:hover { background: #e67e22; }
+        .hint { font-size: 0.75rem; color: #999; margin-top: 10px; }
+        .result-area { margin-top: 20px; padding: 10px; background: #fff3cd; border-radius: 8px; color: #856404; font-weight: bold; min-height: 20px; }
+    </style>
+</head>
 <body>
+
+<div class="calc-card">
+    <h3>TVM 金融計算機</h3>
+    <p style="font-size: 0.8rem;">輸入四個數值來計算第五個</p>
+    
+    <div class="input-group"><label>N (總期數)</label><input type="number" id="n_val" placeholder="例如：12"></div>
+    <div class="input-group"><label>I/Y (年利率 %)</label><input type="number" id="i_val" placeholder="例如：5"></div>
+    <div class="input-group"><label>PV (現值)</label><input type="number" id="pv_val" placeholder="支出請輸負數"></div>
+    <div class="input-group"><label>PMT (每期支付)</label><input type="number" id="pmt_val" placeholder="無則輸 0"></div>
+    <div class="input-group"><label>FV (終值)</label><input type="number" id="fv_val" placeholder="例如：1000"></div>
+
+    <button class="btn-calc" onclick="calculateTVM()">COMPUTE</button>
+    <div class="result-area" id="ba_result">準備就緒</div>
+    
+    <p class="hint">註：現金流方向不同，正負號需相反</p>
+    <a href="index.html" style="display:block; margin-top:15px; font-size:0.8rem; color:#0288d1; text-decoration:none;">← 回首頁</a>
+</div>
+
+<script>
+function calculateTVM() {
+    const n = document.getElementById('n_val').value !== "" ? parseFloat(document.getElementById('n_val').value) : null;
+    const i = document.getElementById('i_val').value !== "" ? parseFloat(document.getElementById('i_val').value) / 100 : null;
+    const pv = document.getElementById('pv_val').value !== "" ? parseFloat(document.getElementById('pv_val').value) : null;
+    const pmt = document.getElementById('pmt_val').value !== "" ? parseFloat(document.getElementById('pmt_val').value) : null;
+    const fv = document.getElementById('fv_val').value !== "" ? parseFloat(document.getElementById('fv_val').value) : null;
+
+    let resText = "";
+    try {
+        if (fv === null) {
+            const res = -(pv * Math.pow(1 + i, n) + pmt * ((Math.pow(1 + i, n) - 1) / i));
+            document.getElementById('fv_val').value = res.toFixed(2);
+            resText = "計算結果 FV: " + res.toFixed(2);
+        } else if (pv === null) {
+            const res = -(fv / Math.pow(1 + i, n) + pmt * ((Math.pow(1 + i, n) - 1) / (i * Math.pow(1 + i, n))));
+            document.getElementById('pv_val').value = res.toFixed(2);
+            resText = "計算結果 PV: " + res.toFixed(2);
+        } else if (pmt === null) {
+            const res = -(i * (fv + pv * Math.pow(1 + i, n))) / (Math.pow(1 + i, n) - 1);
+            document.getElementById('pmt_val').value = res.toFixed(2);
+            resText = "計算結果 PMT: " + res.toFixed(2);
+        } else if (n === null) {
+            const res = Math.log((pmt - fv * i) / (pmt + pv * i)) / Math.log(1 + i);
+            document.getElementById('n_val').value = res.toFixed(2);
+            resText = "計算結果 N: " + res.toFixed(2);
+        } else {
+            resText = "請留下一格空白";
+        }
+    } catch (e) {
+        resText = "計算錯誤，請檢查數值";
+    }
+    document.getElementById('ba_result').innerText = resText;
+}
+</script>
+
+</body>
+</html>
